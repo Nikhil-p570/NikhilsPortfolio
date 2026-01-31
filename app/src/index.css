@@ -1,0 +1,292 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 2%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 5%;
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 5%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 186 100% 50%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 60%;
+    --accent: 186 100% 50%;
+    --accent-foreground: 0 0% 0%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 186 100% 50%;
+    --radius: 0.5rem;
+    
+    --cyan: #00F0FF;
+    --cyan-glow: rgba(0, 240, 255, 0.5);
+    --dark-bg: #050505;
+    --darker-bg: #020202;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-[#050505] text-white antialiased;
+    font-family: 'Rajdhani', sans-serif;
+    overflow-x: hidden;
+  }
+  
+  ::selection {
+    background: rgba(0, 240, 255, 0.3);
+    color: white;
+  }
+}
+
+/* Typography */
+.font-orbitron {
+  font-family: 'Orbitron', sans-serif;
+}
+
+.font-rajdhani {
+  font-family: 'Rajdhani', sans-serif;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050505;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #00F0FF;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00d0dd;
+}
+
+/* Cyan Glow Effects */
+.glow-text {
+  text-shadow: 0 0 10px var(--cyan-glow),
+               0 0 20px var(--cyan-glow),
+               0 0 40px var(--cyan-glow);
+}
+
+.glow-box {
+  box-shadow: 0 0 10px var(--cyan-glow),
+              0 0 20px var(--cyan-glow),
+              inset 0 0 10px var(--cyan-glow);
+}
+
+.glow-border {
+  border: 1px solid var(--cyan);
+  box-shadow: 0 0 10px var(--cyan-glow),
+              inset 0 0 5px var(--cyan-glow);
+}
+
+/* Gradient Text */
+.gradient-text {
+  background: linear-gradient(135deg, #00F0FF 0%, #0080FF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glass Effect */
+.glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Grid Background */
+.grid-bg {
+  background-image: 
+    linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { 
+    box-shadow: 0 0 5px var(--cyan-glow),
+                0 0 10px var(--cyan-glow);
+  }
+  50% { 
+    box-shadow: 0 0 20px var(--cyan-glow),
+                0 0 40px var(--cyan-glow),
+                0 0 60px var(--cyan-glow);
+  }
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-glitch {
+  animation: glitch 0.3s ease-in-out;
+}
+
+/* Scanline Effect */
+.scanline::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: rgba(0, 240, 255, 0.5);
+  animation: scanline 3s linear infinite;
+  pointer-events: none;
+}
+
+/* Button Styles */
+.btn-cyan {
+  @apply relative overflow-hidden px-8 py-3 font-orbitron font-semibold text-sm tracking-wider;
+  background: transparent;
+  border: 1px solid var(--cyan);
+  color: var(--cyan);
+  transition: all 0.3s ease;
+}
+
+.btn-cyan::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--cyan-glow), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn-cyan:hover::before {
+  left: 100%;
+}
+
+.btn-cyan:hover {
+  background: var(--cyan);
+  color: #000;
+  box-shadow: 0 0 20px var(--cyan-glow);
+}
+
+/* Card Hover Effect */
+.card-hover {
+  @apply transition-all duration-500;
+}
+
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 40px rgba(0, 240, 255, 0.2);
+}
+
+/* Skill Tag */
+.skill-tag {
+  @apply px-4 py-2 text-sm font-medium;
+  background: rgba(0, 240, 255, 0.1);
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  color: var(--cyan);
+  transition: all 0.3s ease;
+}
+
+.skill-tag:hover {
+  background: rgba(0, 240, 255, 0.2);
+  border-color: var(--cyan);
+  box-shadow: 0 0 15px var(--cyan-glow);
+}
+
+/* Section Divider */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+}
+
+/* Progress Ring */
+.progress-ring {
+  transform: rotate(-90deg);
+}
+
+.progress-ring-circle {
+  transition: stroke-dashoffset 0.1s ease;
+}
+
+/* Canvas Container */
+.canvas-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Content Layer */
+.content-layer {
+  position: relative;
+  z-index: 10;
+}
+
+/* Hide scrollbar but keep functionality */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Responsive Typography */
+.text-responsive-hero {
+  font-size: clamp(3rem, 15vw, 12rem);
+}
+
+.text-responsive-section {
+  font-size: clamp(2rem, 8vw, 6rem);
+}
+
+.text-responsive-body {
+  font-size: clamp(0.875rem, 1.5vw, 1.125rem);
+}
