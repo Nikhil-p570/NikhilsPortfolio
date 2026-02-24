@@ -8,26 +8,34 @@ gsap.registerPlugin(ScrollTrigger);
 const projects = [
   {
     id: 1,
-    name: 'TEAMUP',
-    description:
-      'A real-time collaboration platform enabling idea sharing, team formation, and skill-based matching. Features include real-time chat, notifications, and Firebase authentication with Google OAuth.',
-    image: '/teamup-project.jpg',
-    tech: ['React.js', 'TypeScript', 'Firebase', 'Tailwind CSS'],
-    github: '#',
-    live: '#',
+    name: "TRANSPOCARBON",
+    description: "Established a digital carbon marketplace linking farmers, project entities, auditors, registries, and buyers to streamline credit lifecycle management.",
+    image: "/projects/transpoCarbon.png",
+    tech: ["React.js", "Firebase", "Python", "Google Earth Engine", "CHIRPS Dataset"],
+    github: "https://github.com/Nikhil-p570/transpoCarbon",
+    live: "",
     featured: true,
   },
   {
     id: 2,
-    name: 'GPS ATTENDANCE',
-    description:
-      'GPS-based attendance management system with geolocation tracking. Integrated Leaflet API for mapping and implemented JWT-secured GPS geofencing for accurate attendance marking.',
-    image: '/gps-project.jpg',
-    tech: ['React.js', 'Node.js', 'MongoDB', 'Leaflet API'],
-    github: '#',
-    live: '#',
+    name: "GPS ATTENDANCE SYSTEM",
+    description: "System to mark the attendance using GPS based geolocation tracking. Integrated Leaflet API for mapping and implemented JWT-secured GPS geofencing for accurate attendance marking.",
+    image: "/projects/gpsattendance.png",
+    tech: ["React.js", "TailwindCSS", "MongoDB", "Node.js"],
+    github: "https://github.com/Nikhil-p570/GPS_Attendance_System-",
+    live: "",
     featured: false,
   },
+  {
+    id: 3,
+    name: "TEAM UP",
+    description: "A platform to connect with like-minded people and collaborate on projects. Features include real-time chat, notifications, and Firebase authentication with Google OAuth.",
+    image: "/projects/teamup.png",
+    tech: ["JavaScript", "React.js", "Node.js", "Firebase"],
+    github: "https://github.com/Nikhil-p570/Teamup",
+    live: "https://teamupns.vercel.app/",
+    featured: false,
+  }
 ];
 
 export default function Projects() {
@@ -105,9 +113,8 @@ export default function Projects() {
           {projects.map((project, index) => (
             <div
               key={project.id}
-              className={`project-card grid lg:grid-cols-2 gap-8 lg:gap-12 items-center ${
-                index % 2 === 1 ? 'lg:flex-row-reverse' : ''
-              }`}
+              className={`project-card grid lg:grid-cols-2 gap-8 lg:gap-12 items-center ${index % 2 === 1 ? 'lg:flex-row-reverse' : ''
+                }`}
 
             >
               {/* Image */}
@@ -179,18 +186,24 @@ export default function Projects() {
                 <div className="flex items-center gap-4">
                   <a
                     href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="flex items-center gap-2 px-6 py-3 border border-white/20 text-white/70 hover:border-[#00F0FF] hover:text-[#00F0FF] transition-all duration-300 font-rajdhani tracking-wider"
                   >
                     <Github className="w-5 h-5" />
                     CODE
                   </a>
-                  <a
-                    href={project.live}
-                    className="flex items-center gap-2 px-6 py-3 bg-[#00F0FF] text-black font-semibold hover:bg-[#00d0dd] transition-all duration-300 font-rajdhani tracking-wider"
-                  >
-                    <ExternalLink className="w-5 h-5" />
-                    LIVE DEMO
-                  </a>
+                  {project.live && (
+                    <a
+                      href={project.live}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 px-6 py-3 bg-[#00F0FF] text-black font-semibold hover:bg-[#00d0dd] transition-all duration-300 font-rajdhani tracking-wider"
+                    >
+                      <ExternalLink className="w-5 h-5" />
+                      LIVE DEMO
+                    </a>
+                  )}
                 </div>
               </div>
             </div>

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Menu, X, Github, Linkedin, Code2 } from 'lucide-react';
+import { Menu, X, Github, Linkedin, Code2, FileUser } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -70,11 +70,10 @@ export default function Navigation() {
     <>
       <nav
         ref={navRef}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          isScrolled
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
             ? 'bg-[#050505]/80 backdrop-blur-lg border-b border-white/5'
             : 'bg-transparent'
-        }`}
+          }`}
         style={{ opacity: 0 }}
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -110,6 +109,15 @@ export default function Navigation() {
 
             {/* Social Links */}
             <div className="hidden lg:flex items-center gap-4">
+              <a
+                href="https://drive.google.com/file/d/1a-LnJ0HxPOkDHkz8tSsItVtedz6GF_kk/view?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white/70 hover:text-[#00F0FF] transition-colors"
+                title="Resume"
+              >
+                <FileUser className="w-5 h-5" />
+              </a>
               <a
                 href="https://github.com/Nikhil-p570"
                 target="_blank"
@@ -154,9 +162,8 @@ export default function Navigation() {
       {/* Mobile Menu */}
       <div
         ref={mobileMenuRef}
-        className={`fixed inset-0 z-40 bg-[#050505]/95 backdrop-blur-lg lg:hidden ${
-          isMobileMenuOpen ? 'pointer-events-auto' : 'pointer-events-none'
-        }`}
+        className={`fixed inset-0 z-40 bg-[#050505]/95 backdrop-blur-lg lg:hidden ${isMobileMenuOpen ? 'pointer-events-auto' : 'pointer-events-none'
+          }`}
         style={{ opacity: 0, transform: 'translateX(100%)' }}
       >
         <div className="flex flex-col items-center justify-center h-full gap-8">
@@ -173,6 +180,14 @@ export default function Navigation() {
           ))}
 
           <div className="flex items-center gap-6 mt-8">
+            <a
+              href="https://drive.google.com/file/d/1a-LnJ0HxPOkDHkz8tSsItVtedz6GF_kk/view?usp=sharing"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white/70 hover:text-[#00F0FF] transition-colors"
+            >
+              <FileUser className="w-6 h-6" />
+            </a>
             <a
               href="https://github.com/Nikhil-p570"
               target="_blank"

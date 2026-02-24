@@ -15,14 +15,21 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 
+import emailjs from '@emailjs/browser';
+
 gsap.registerPlugin(ScrollTrigger);
+
+// EMAILJS CONFIGURATION (You can also set these in a .env file)
+const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_677j6v9';
+const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_v8at2t5';
+const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || '5U_i9S_Bclm0W2422';
 
 const contactInfo = [
   {
     icon: Mail,
     label: 'Email',
     value: 'nikhil.pabbisetti2006@gmail.com',
-    href: 'mailto:nikhil.pabbisetti2006@gmail.com',
+    href: 'https://mail.google.com/mail/?view=cm&to=nikhil.pabbisetti2006@gmail.com',
   },
   {
     icon: Phone,
@@ -50,12 +57,13 @@ export default function Contact() {
   const formRef = useRef<HTMLFormElement>(null);
   const infoRef = useRef<HTMLDivElement>(null);
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
+    from_name: '',
+    from_email: '',
     message: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -117,16 +125,40 @@ export default function Contact() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitError('');
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    try {
+      if (!EMAILJS_PUBLIC_KEY || !EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID) {
+        throw new Error('EmailJS credentials are not configured.');
+      }
 
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    setFormData({ name: '', email: '', message: '' });
+      const result = await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        formData,
+        EMAILJS_PUBLIC_KEY
+      );
 
-    // Reset success message after 5 seconds
-    setTimeout(() => setIsSubmitted(false), 5000);
+      if (result.status === 200) {
+        setIsSubmitted(true);
+        setFormData({ from_name: '', from_email: '', message: '' });
+      } else {
+        throw new Error('Failed to send message.');
+      }
+    } catch (error: any) {
+      console.error('EmailJS Error:', error);
+      if (error.text === 'Account not found' || error.message?.includes('Account not found')) {
+        setSubmitError('EmailJS is not set up correctly. Please replace the placeholders with your actual Service ID, Template ID, and Public Key from emailjs.com');
+      } else {
+        setSubmitError(error.message || 'Something went wrong. Please try again later.');
+      }
+    } finally {
+      setIsSubmitting(false);
+      // Reset success message after 5 seconds
+      setTimeout(() => setIsSubmitted(false), 5000);
+      // Reset error after 5 seconds
+      if (submitError) setTimeout(() => setSubmitError(''), 5000);
+    }
   };
 
   return (
@@ -171,9 +203,9 @@ export default function Contact() {
                 </label>
                 <Input
                   type="text"
-                  value={formData.name}
+                  value={formData.from_name}
                   onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value })
+                    setFormData({ ...formData, from_name: e.target.value })
                   }
                   placeholder="John Doe"
                   required
@@ -187,9 +219,9 @@ export default function Contact() {
                 </label>
                 <Input
                   type="email"
-                  value={formData.email}
+                  value={formData.from_email}
                   onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
+                    setFormData({ ...formData, from_email: e.target.value })
                   }
                   placeholder="john@example.com"
                   required
@@ -212,6 +244,12 @@ export default function Contact() {
                   className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-[#00F0FF] focus:ring-[#00F0FF]/20 resize-none"
                 />
               </div>
+
+              {submitError && (
+                <p className="text-red-400 font-rajdhani text-sm text-center">
+                  {submitError}
+                </p>
+              )}
 
               <Button
                 type="submit"
@@ -250,6 +288,8 @@ export default function Contact() {
                   <a
                     key={index}
                     href={info.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="flex items-center gap-4 group"
                   >
                     <div className="w-12 h-12 rounded-lg bg-[#00F0FF]/10 flex items-center justify-center group-hover:bg-[#00F0FF]/20 transition-colors">
@@ -299,7 +339,9 @@ export default function Contact() {
                   Currently looking for internships and collaborative projects.
                 </p>
                 <a
-                  href="mailto:nikhil.pabbisetti2006@gmail.com"
+                  href="https://mail.google.com/mail/?view=cm&to=nikhil.pabbisetti2006@gmail.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-[#00F0FF] font-rajdhani hover:gap-3 transition-all duration-300"
                 >
                   Let's talk

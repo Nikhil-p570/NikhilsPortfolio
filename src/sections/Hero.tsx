@@ -6,7 +6,7 @@ export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
   const nameRef = useRef<HTMLHeadingElement>(null);
   const titleRef = useRef<HTMLParagraphElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const subtitleRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const cubeRef = useRef<HTMLDivElement>(null);
 
@@ -14,9 +14,11 @@ export default function Hero() {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ delay: 2.3 });
 
-      // Name animation - letter by letter
+      // Name and Profile Image animation
       if (nameRef.current) {
         const letters = nameRef.current.querySelectorAll('.letter');
+        const profileImg = containerRef.current?.querySelector('.profile-image');
+
         tl.fromTo(
           letters,
           { y: 100, opacity: 0, rotateX: -90 },
@@ -29,14 +31,29 @@ export default function Hero() {
             ease: 'back.out(1.7)',
           }
         );
+
+        if (profileImg) {
+          tl.fromTo(
+            profileImg,
+            { scale: 0.8, opacity: 0, x: 50 },
+            {
+              scale: 1,
+              opacity: 1,
+              x: 0,
+              duration: 1.2,
+              ease: 'power3.out',
+            },
+            '-=0.8'
+          );
+        }
       }
 
       // Title animation
       tl.fromTo(
         titleRef.current,
-        { y: 50, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' },
-        '-=0.4'
+        { x: -50, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.8, ease: 'power3.out' },
+        '-=0.6'
       );
 
       // Subtitle animation
@@ -55,16 +72,20 @@ export default function Hero() {
         '-=0.3'
       );
 
-      // Cube floating animation
-      if (cubeRef.current) {
-        gsap.to(cubeRef.current, {
-          y: -20,
-          duration: 2,
+      // Floating animation for image container
+      const profileImg = containerRef.current?.querySelector('.profile-image');
+      if (profileImg) {
+        gsap.to(profileImg, {
+          y: -15,
+          duration: 3,
           ease: 'power1.inOut',
           yoyo: true,
           repeat: -1,
         });
+      }
 
+      // Cube rotating animation
+      if (cubeRef.current) {
         gsap.to(cubeRef.current, {
           rotateY: 360,
           rotateX: 360,
@@ -120,70 +141,99 @@ export default function Hero() {
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 text-center px-6">
-        {/* Pre-title */}
-        <p className="font-rajdhani text-sm tracking-[0.5em] text-[#00F0FF] mb-6 opacity-0 animate-fade-in">
-          HELLO, WORLD
-        </p>
+      <div className="container relative z-10 mx-auto px-6">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Left Column: Text Content */}
+          <div className="text-center lg:text-left order-2 lg:order-1">
+            {/* Pre-title */}
+            <p className="font-rajdhani text-sm tracking-[0.5em] text-[#00F0FF] mb-6 opacity-0 animate-fade-in">
+              HELLO, WORLD
+            </p>
 
-        {/* Name */}
-        <h1
-          ref={nameRef}
-          className="font-orbitron text-responsive-hero font-black tracking-tight mb-4"
-          style={{ perspective: '500px' }}
-        >
-          {name.split('').map((letter, index) => (
-            <span
-              key={index}
-              className="letter inline-block text-white"
-              style={{ textShadow: '0 0 30px rgba(0, 240, 255, 0.3)' }}
+            {/* Name */}
+            <h1
+              ref={nameRef}
+              className="font-orbitron text-responsive-hero font-black tracking-tight mb-4"
+              style={{ perspective: '500px' }}
             >
-              {letter}
-            </span>
-          ))}
-        </h1>
+              <div className="flex justify-center lg:justify-start">
+                {name.split('').map((letter, index) => (
+                  <span
+                    key={index}
+                    className="letter inline-block text-white"
+                    style={{ textShadow: '0 0 30px rgba(0, 240, 255, 0.3)' }}
+                  >
+                    {letter}
+                  </span>
+                ))}
+              </div>
+            </h1>
 
-        {/* Title */}
-        <p
-          ref={titleRef}
-          className="font-orbitron text-2xl md:text-4xl lg:text-5xl font-semibold tracking-wider mb-6 opacity-0"
-        >
-          <span className="gradient-text">FULL STACK DEVELOPER</span>
-        </p>
+            {/* Title */}
+            <p
+              ref={titleRef}
+              className="font-orbitron text-2xl md:text-3xl lg:text-5xl font-semibold tracking-wider mb-6 opacity-0"
+            >
+              <span className="gradient-text">FULL STACK DEVELOPER</span>
+            </p>
 
-        {/* Subtitle */}
-        <p
-          ref={subtitleRef}
-          className="font-rajdhani text-lg md:text-xl text-white/60 max-w-2xl mx-auto mb-10 opacity-0"
-        >
-          Building immersive digital experiences with code and creativity.
-          <br />
-          <span className="text-[#00F0FF]">500+</span> DSA problems solved | LeetCode Top{' '}
-          <span className="text-[#00F0FF]">21%</span>
-        </p>
+            {/* Subtitle */}
+            <div ref={subtitleRef} className="opacity-0">
+              <p className="font-rajdhani text-lg md:text-xl text-white/60 max-w-2xl lg:mx-0 mx-auto mb-10">
+                Building immersive digital experiences with code and creativity.
+                <br />
+                <span className="text-[#00F0FF]">500+</span> DSA problems solved | LeetCode Top{' '}
+                <span className="text-[#00F0FF]">21%</span>
+              </p>
+            </div>
 
-        {/* CTA Buttons */}
-        <div ref={ctaRef} className="flex flex-col sm:flex-row items-center justify-center gap-4 opacity-0">
-          <a
-            href="#projects"
-            onClick={(e) => {
-              e.preventDefault();
-              document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className="btn-cyan"
-          >
-            VIEW PROJECTS
-          </a>
-          <a
-            href="#contact"
-            onClick={(e) => {
-              e.preventDefault();
-              document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className="px-8 py-3 font-orbitron font-semibold text-sm tracking-wider text-white/70 hover:text-[#00F0FF] transition-colors border border-white/20 hover:border-[#00F0FF]/50"
-          >
-            GET IN TOUCH
-          </a>
+            {/* CTA Buttons */}
+            <div ref={ctaRef} className="flex flex-col sm:flex-row items-center lg:justify-start justify-center gap-4 opacity-0">
+              <a
+                href="#projects"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="btn-cyan"
+              >
+                VIEW PROJECTS
+              </a>
+              <a
+                href="#contact"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="px-8 py-3 font-orbitron font-semibold text-sm tracking-wider text-white/70 hover:text-[#00F0FF] transition-colors border border-white/20 hover:border-[#00F0FF]/50"
+              >
+                GET IN TOUCH
+              </a>
+            </div>
+          </div>
+
+          {/* Right Column: Large Profile Image */}
+          <div className="flex justify-center lg:justify-end order-1 lg:order-2">
+            <div
+              className="profile-image relative w-full max-w-[280px] lg:max-w-sm aspect-[250/400] opacity-0 transition-all duration-300"
+            >
+              <div className="absolute inset-0 bg-[#00F0FF]/20 rounded-3xl blur-3xl animate-pulse" />
+              <div className="relative w-full h-full rounded-3xl border-2 border-[#00F0FF]/50 overflow-hidden glass box-glow">
+                <img
+                  src="https://res.cloudinary.com/dfc8a9imb/image/upload/c_crop,w_250,h_400,g_auto/v1751541568/profile_xzc4h2.jpg"
+                  alt="Nikhil"
+                  className="w-full h-full object-cover"
+                />
+
+                {/* Decorative scanning line effect */}
+                <div className="absolute top-0 left-0 w-full h-1 bg-[#00F0FF]/50 blur-sm animate-scan" style={{ animationDuration: '3s' }} />
+              </div>
+
+              {/* Corner Accents for image */}
+              <div className="absolute -top-4 -left-4 w-12 h-12 border-t-2 border-l-2 border-[#00F0FF]" />
+              <div className="absolute -bottom-4 -right-4 w-12 h-12 border-b-2 border-r-2 border-[#00F0FF]" />
+            </div>
+          </div>
         </div>
       </div>
 

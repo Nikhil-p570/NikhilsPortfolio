@@ -69,6 +69,8 @@ const skillCategories = [
       { name: 'AWS', level: 75 },
       { name: 'Google Cloud', level: 70 },
       { name: 'Machine Learning', level: 70 },
+      { name: 'Google Earth Engine', level: 80 },
+      { name: 'CHIRPS Dataset', level: 75 },
     ],
   },
 ];
@@ -263,10 +265,10 @@ export default function Skills() {
               'Firebase',
               'Tailwind',
               'Git',
-              'AWS',
               'Python',
               'Java',
-              'Express',
+              'Google Earth Engine',
+              'CHIRPS Dataset',
               'REST API',
             ].map((tech) => (
               <span

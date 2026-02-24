@@ -1,14 +1,19 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { User, MapPin, GraduationCap, Award } from 'lucide-react';
+import { User, GraduationCap, Award, Mail } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const stats = [
   { icon: GraduationCap, label: 'CGPA', value: '9.33/10' },
   { icon: Award, label: 'DSA Problems', value: '500+' },
-  { icon: MapPin, label: 'Location', value: 'Hyderabad' },
+  {
+    icon: Mail,
+    label: 'Email',
+    value: 'Compose',
+    href: 'https://mail.google.com/mail/?view=cm&to=nikhil.pabbisetti2006@gmail.com'
+  },
 ];
 
 export default function About() {
@@ -161,20 +166,41 @@ export default function About() {
 
             {/* Stats */}
             <div ref={statsRef} className="grid grid-cols-3 gap-4">
-              {stats.map((stat, index) => (
-                <div
-                  key={index}
-                  className="stat-item glass rounded-lg p-4 text-center group hover:border-[#00F0FF]/50 transition-all duration-300"
-                >
-                  <stat.icon className="w-6 h-6 text-[#00F0FF] mx-auto mb-2 group-hover:scale-110 transition-transform" />
-                  <div className="font-orbitron text-xl font-bold text-white">
-                    {stat.value}
+              {stats.map((stat, index) => {
+                const Content = (
+                  <>
+                    <stat.icon className="w-6 h-6 text-[#00F0FF] mx-auto mb-2 group-hover:scale-110 transition-transform" />
+                    <div className="font-orbitron text-xl font-bold text-white">
+                      {stat.value}
+                    </div>
+                    <div className="font-rajdhani text-xs text-white/50 tracking-wider">
+                      {stat.label}
+                    </div>
+                  </>
+                );
+
+                const className = "stat-item glass rounded-lg p-4 text-center group hover:border-[#00F0FF]/50 transition-all duration-300 block";
+
+                if (stat.href) {
+                  return (
+                    <a
+                      key={index}
+                      href={stat.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={className}
+                    >
+                      {Content}
+                    </a>
+                  );
+                }
+
+                return (
+                  <div key={index} className={className}>
+                    {Content}
                   </div>
-                  <div className="font-rajdhani text-xs text-white/50 tracking-wider">
-                    {stat.label}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
